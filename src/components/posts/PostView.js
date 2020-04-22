@@ -25,9 +25,9 @@ class PostView extends Component {
     return (
       <div className="comment" key={comment.id}>
         <div className="content">
-          <a href="#" className="author">
-            {comment.name}
-          </a>
+          <div className="author">
+            by: {comment.name}
+          </div>
           <div className="text">{comment.body}</div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { createUserPost, clearUserPost } from "../../actions/posts";
 
 class PostCreate extends Component {
-  componentDidUnmount() {
+  componentWillMount() {
     this.props.clearUserPost();
   }
 
