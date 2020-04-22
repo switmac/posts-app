@@ -1,6 +1,7 @@
 import {
   FETCH_POST,
   FETCH_USER_POST,
+  FETCHING_USER_POST,
   CREATE_POST,
   VIEW_POST,
   DELETE_POST,
@@ -17,6 +18,20 @@ export const postReducer = (state = {}, action) => {
     default:
       return state;
   }
+};
+
+const PROGRESS_INITIAL_STATE = {
+  isFetchingUserPost: false,
+};
+
+export const progressStateReducer = (
+  state = PROGRESS_INITIAL_STATE,
+  action
+) => {
+  if (action.type === FETCHING_USER_POST) {
+    return { ...state, isFetchingUserPost: action.payload };
+  }
+  return state;
 };
 
 export const postsReducer = (state = [], action) => {

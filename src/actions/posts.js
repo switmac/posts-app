@@ -5,6 +5,7 @@ import {
   VIEW_POST,
   DELETE_POST,
   FETCH_USER_POST,
+  FETCHING_USER_POST,
   FETCH_POST_COMMENT,
 } from "../constants/actionTypes";
 
@@ -54,11 +55,25 @@ export const fetchPost = () => async (dispatch) => {
 };
 
 export const fetchUserPost = (userId) => async (dispatch) => {
-  console.log(userId, dispatch)
+  dispatch({
+    type: FETCHING_USER_POST,
+    payload: true,
+  });
+
+  dispatch({
+    type: FETCH_USER_POST,
+    payload: [],
+  });
+
   const response = await jsonPlaceHolder.get(`posts?userId=${userId}`);
-  console.log(response)
+
   dispatch({
     type: FETCH_USER_POST,
     payload: response.data,
+  });
+
+  dispatch({
+    type: FETCHING_USER_POST,
+    payload: false,
   });
 };

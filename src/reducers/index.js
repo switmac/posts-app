@@ -1,6 +1,10 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
-import { postReducer, postsReducer} from "./postsReducer";
+import {
+  postReducer,
+  postsReducer,
+  progressStateReducer,
+} from "./postsReducer";
 import { userReducer, usersReducer } from "./usersReducer";
 
 export default combineReducers({
@@ -9,4 +13,5 @@ export default combineReducers({
   posts: postsReducer,
   users: usersReducer,
   user: userReducer,
+  progress: progressStateReducer,
 });

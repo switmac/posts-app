@@ -7,14 +7,22 @@ class PostList extends Component {
       return <div>No post for this user.</div>;
     }
 
-    return this.props.posts.map((post) => {
+    return this.props.posts.map((post, index) => {
+      const isNotFirstItem = index !== 0;
+      const divider = isNotFirstItem ? (
+        <div class="ui section divider"></div>
+      ) : (
+        ""
+      );
+
       return (
-        <div className="item divider" key={post.id}>
+        <div className="item" key={post.id}>
+          {divider}
           <div className="content">
             <div className="header">{post.title}</div>
             <div className="description">{post.body}</div>
           </div>
-          <div className="ui right floated">
+          <div className="button-section ui right floated" style={{marginTop: '10px'}}>
             <button className="ui primary basic button">View</button>
             <button className="ui negative basic button">Delete</button>
           </div>
@@ -28,11 +36,19 @@ class PostList extends Component {
       return null;
     }
 
+    const loadingClassName = `ui segment ${
+      this.props.isFetchingUserPost ? "loading" : ""
+    }`;
+
     return (
       <div>
         <h4>{this.props.user.name} Posts</h4>
-        <button className="ui positive basic button fluid">Create New Post</button>
-        <div className="ui list">{this.renderPostList()}</div>
+        <button className="ui positive basic button fluid">
+          Create New Post
+        </button>
+        <div className={loadingClassName}>
+          <div className="ui list">{this.renderPostList()}</div>
+        </div>
       </div>
     );
   }
@@ -47,6 +63,7 @@ const mapStateToProps = (state) => {
     users: state.users,
     user: state.user,
     posts: state.posts,
+    isFetchingUserPost: state.progress.isFetchingUserPost,
   };
 };
 

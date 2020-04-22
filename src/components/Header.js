@@ -6,7 +6,7 @@ const Header = () => {
     <div className="ui secondary pointing menu">
       <Link to="/" className="item">
         <h3 className="ui header">
-          <i class="th large icon"></i>
+          <i className="th large icon"></i>
           Post App
         </h3>
       </Link>
