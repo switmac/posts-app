@@ -1,7 +1,15 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
+import { createUserPost, clearUserPost } from "../../actions/posts";
 
 class PostCreate extends Component {
+  componentWillUnmount() {
+    this.props.clearUserPost();
+  }
+
   renderError({ touched, error }) {
     if (touched && error) {
       return (
@@ -14,7 +22,6 @@ class PostCreate extends Component {
   }
 
   renderInput = ({ input, label, meta }) => {
-    console.log(meta);
     const className = `field ${meta.error && meta.touched ? "error" : ""}`;
     return (
       <div className={className}>
@@ -25,23 +32,48 @@ class PostCreate extends Component {
     );
   };
 
-  onSubmit(formValues) {
-    console.log(formValues);
+  onSubmit = (formValues) => {
+    const payload = { ...formValues, userId: this.props.user.id };
+    this.props.createUserPost(payload);
+  };
+
+  renderNotification() {
+    return this.props.post.id && !this.props.isCreatingUserPost ? (
+      <div className="ui green segment">Post successfully added!</div>
+    ) : (
+      ""
+    );
   }
 
   render() {
+    const buttonClassName = `ui button primary ${
+      this.props.isCreatingUserPost ? "loading" : ""
+    }`;
+
     return (
       <form
         onSubmit={this.props.handleSubmit(this.onSubmit)}
         className="ui form error"
       >
+        <div className="ui grid column">
+          <h3 className="column twelve wide">
+            Add Post for {this.props.user.name || ""}
+          </h3>
+          <div className="right aligned column four wide">
+            <Link to="/">
+              <i className="icon arrow circle left"></i>
+              Go back to Posts
+            </Link>
+          </div>
+        </div>
+        {this.renderNotification()}
         <Field name="title" component={this.renderInput} label="Enter Title" />
         <Field
-          name="description"
+          name="body"
           component={this.renderInput}
           label="Enter Description"
         />
-        <button className="ui button primary" type="submit">
+        <button className={buttonClassName} type="submit">
           Submit
         </button>
       </form>
@@ -54,7 +86,7 @@ const validate = (formValues) => {
 
   const requiredFields = {
     title: "You must enter title",
-    description: "You must enter description",
+    body: "You must enter description",
   };
 
   Object.keys(requiredFields).forEach((field) => {
@@ -62,15 +94,21 @@ const validate = (formValues) => {
       errors[field] = requiredFields[field];
     }
   });
-  // if (!formValues.title) {
-  //   errors.title = "You must enter title";
-  // }
-  // if (!formValues.description) {
-  //   errors.description = "You must enter description";
-  // }
 
   return errors;
 };
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+    post: state.post,
+    isCreatingUserPost: state.progress.isCreatingUserPost,
+  };
+};
+
+PostCreate = connect(mapStateToProps, { createUserPost, clearUserPost })(
+  PostCreate
+);
 
 export default reduxForm({
   form: "PostCreate",

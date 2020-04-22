@@ -5,16 +5,35 @@ import {
   VIEW_POST,
   DELETE_POST,
   FETCH_USER_POST,
+  CLEAR_USER_POST,
   FETCHING_USER_POST,
+  CREATING_USER_POST,
   FETCH_POST_COMMENT,
 } from "../constants/actionTypes";
 
-export const createPost = (post) => async (dispatch) => {
+export const clearUserPost = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_USER_POST,
+    payload: {},
+  });
+};
+
+export const createUserPost = (post) => async (dispatch) => {
+  dispatch({
+    type: CREATING_USER_POST,
+    payload: true,
+  });
+
   const response = await jsonPlaceHolder.post("/posts", post);
 
   dispatch({
     type: CREATE_POST,
     payload: response.data,
+  });
+
+  dispatch({
+    type: CREATING_USER_POST,
+    payload: false,
   });
 };
 

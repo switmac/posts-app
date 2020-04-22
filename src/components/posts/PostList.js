@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 class PostList extends Component {
@@ -10,7 +11,7 @@ class PostList extends Component {
     return this.props.posts.map((post, index) => {
       const isNotFirstItem = index !== 0;
       const divider = isNotFirstItem ? (
-        <div class="ui section divider"></div>
+        <div className="ui section divider"></div>
       ) : (
         ""
       );
@@ -22,7 +23,10 @@ class PostList extends Component {
             <div className="header">{post.title}</div>
             <div className="description">{post.body}</div>
           </div>
-          <div className="button-section ui right floated" style={{marginTop: '10px'}}>
+          <div
+            className="button-section ui right floated"
+            style={{ marginTop: "10px" }}
+          >
             <button className="ui primary basic button">View</button>
             <button className="ui negative basic button">Delete</button>
           </div>
@@ -43,9 +47,9 @@ class PostList extends Component {
     return (
       <div>
         <h4>{this.props.user.name} Posts</h4>
-        <button className="ui positive basic button fluid">
+        <Link to="/posts/new" className="ui positive basic button fluid">
           Create New Post
-        </button>
+        </Link>
         <div className={loadingClassName}>
           <div className="ui list">{this.renderPostList()}</div>
         </div>
