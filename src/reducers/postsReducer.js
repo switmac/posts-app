@@ -7,6 +7,7 @@ import {
   CREATE_POST,
   VIEW_POST,
   DELETE_POST,
+  FETCH_POST_COMMENT,
 } from "../constants/actionTypes";
 
 export const postReducer = (state = {}, action) => {
@@ -48,6 +49,15 @@ export const postsReducer = (state = [], action) => {
     case FETCH_USER_POST:
       return action.payload;
     case FETCH_POST:
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const commentsReducer = (state = [], action) => {
+  switch (action.type) {
+    case FETCH_POST_COMMENT:
       return action.payload;
     default:
       return state;

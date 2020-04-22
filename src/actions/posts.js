@@ -2,23 +2,24 @@ import jsonPlaceHolder from "../api/jsonPlaceHolder";
 import {
   FETCH_POST,
   CREATE_POST,
-  VIEW_POST,
   DELETE_POST,
   FETCH_USER_POST,
   CLEAR_USER_POST,
   FETCHING_USER_POST,
   CREATING_USER_POST,
   FETCH_POST_COMMENT,
+  FETCHING_POST_COMMENT,
+  VIEW_POST,
 } from "../constants/actionTypes";
 
-export const clearUserPost = () => (dispatch) => {
+export const clearUserPost = () => dispatch => {
   dispatch({
     type: CLEAR_USER_POST,
     payload: {},
   });
 };
 
-export const createUserPost = (post) => async (dispatch) => {
+export const createUserPost = post => async dispatch => {
   dispatch({
     type: CREATING_USER_POST,
     payload: true,
@@ -37,7 +38,7 @@ export const createUserPost = (post) => async (dispatch) => {
   });
 };
 
-export const deletePost = (postId) => async (dispatch) => {
+export const deletePost = postId => async dispatch => {
   await jsonPlaceHolder.delete(`/posts/${postId}`);
 
   dispatch({
@@ -46,25 +47,33 @@ export const deletePost = (postId) => async (dispatch) => {
   });
 };
 
-export const viewPost = (postId) => async (dispatch) => {
-  const response = await jsonPlaceHolder.get(`/posts/${postId}`);
-
+export const viewUserPost = post => dispatch => {
   dispatch({
     type: VIEW_POST,
-    payload: response.data,
+    payload: post,
   });
 };
 
-export const fetchPostComments = (postId) => async (dispatch) => {
+export const fetchPostComments = postId => async dispatch => {
+  dispatch({
+    type: FETCHING_POST_COMMENT,
+    payload: true,
+  });
+
   const response = await jsonPlaceHolder.get(`/comments?postId=${postId}`);
 
   dispatch({
     type: FETCH_POST_COMMENT,
     payload: response.data,
   });
+
+  dispatch({
+    type: FETCHING_POST_COMMENT,
+    payload: false,
+  });
 };
 
-export const fetchPost = () => async (dispatch) => {
+export const fetchPost = () => async dispatch => {
   const response = await jsonPlaceHolder.get("/posts");
 
   dispatch({
@@ -73,7 +82,7 @@ export const fetchPost = () => async (dispatch) => {
   });
 };
 
-export const fetchUserPost = (userId) => async (dispatch) => {
+export const fetchUserPost = userId => async dispatch => {
   dispatch({
     type: FETCHING_USER_POST,
     payload: true,

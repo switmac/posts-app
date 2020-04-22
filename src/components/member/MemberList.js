@@ -6,9 +6,10 @@ import "./MemberList.css";
 
 class MemberList extends Component {
   componentDidMount() {
-    this.props.fetchUsers()
-    .then(() => {
-      this.getUserPost(this.props.users[0]);
+    this.props.fetchUsers().then(() => {
+      const { user } = this.props;
+      const defaultUser = user && user.name ? user : this.props.users[0];
+      this.getUserPost(defaultUser);
     });
   }
 
@@ -33,11 +34,7 @@ class MemberList extends Component {
           </div>
 
           <div className="one column right aligned">
-            <img
-              className="ui avatar image"
-              src={user.image}
-              alt="img"
-            ></img>
+            <img className="ui avatar image" src={user.image} alt="img"></img>
           </div>
         </div>
       );

@@ -10,9 +10,9 @@ export const fetchUsers = () => async (dispatch) => {
   });
 };
 
-export const selectUser = (userId) => {
+export const selectUser = (user) => {
   return {
     type: SELECT_USER,
-    payload: userId,
+    payload: user,
   };
 };

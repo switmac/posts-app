@@ -2,7 +2,19 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
+import { deletePost, viewUserPost } from "../../actions/posts";
+import { selectUser } from "../../actions/users";
+
 class PostList extends Component {
+  onViewPost = (post) => {
+    this.props.selectUser(this.props.user);
+    this.props.viewUserPost(post);
+  };
+
+  onDeletePost = (postId) => {
+    this.props.deletePost(postId);
+  };
+
   renderPostList() {
     if (this.props.posts.length === 0) {
       return <div>No post for this user.</div>;
@@ -27,8 +39,19 @@ class PostList extends Component {
             className="button-section ui right floated"
             style={{ marginTop: "10px" }}
           >
-            <button className="ui primary basic button">View</button>
-            <button className="ui negative basic button">Delete</button>
+            <Link
+              to="/posts/view"
+              className="ui primary basic button"
+              onClick={() => this.onViewPost(post)}
+            >
+              View
+            </Link>
+            <button
+              className="ui negative basic button"
+              onClick={() => this.onDeletePost(post.id)}
+            >
+              Delete
+            </button>
           </div>
         </div>
       );
@@ -71,4 +94,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(PostList);
+export default connect(mapStateToProps, {
+  viewUserPost,
+  deletePost,
+  selectUser,
+})(PostList);
